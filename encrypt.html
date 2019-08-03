@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+    <script type="text/JavaScript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <style>
+#key{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+    </style>
+  </head>
+  <body>
+    <input id="key" placeholder="密钥" autofocus onkeydown="enterdecode(event)"/>
+    <script type="text/javascript" src="release.json"></script>
+    <script>
+      function enterdecode(e){
+        if (e.keyCode == 13){
+          key = $("#key").val();
+          b=btoa(unescape(encodeURIComponent(data)))
+          //console.log(b, key)
+          c=CryptoJS.AES.encrypt(b, key)
+          d=c.toString()
+          console.log(d);
+          document.write('<div style="word-break:break-all"><p>data = "' + d + '"</p></div>');
+        }
+      }
+    </script>
+
+  </body>
+</html>
