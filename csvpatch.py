@@ -4,7 +4,6 @@
 import csv
 import json
 
-FIELDS = ['专业：', '电话：']
 try:
     with open('data.json', encoding='utf-8') as jsondata:
         ALL = json.load(jsondata)
@@ -18,15 +17,16 @@ except FileNotFoundError:
 # to specify newline='', since the csv module does its own (universal)
 # newline handling.
 with open('data.csv', encoding='utf-8-sig', newline='') as csvin:
-    csvreader = csv.reader(csvin)
+    csvreader = csv.DictReader(csvin)
     for row in csvreader:
-        name, university, *info, class_, student_fmt = row
+        university = row.pop('大学')
+        student_fmt = row.pop('HTML', '')
         if not student_fmt:
-            student_fmt = f'<li class=\\"{class_}\\">' if class_ else '<li>'
-            student_fmt += f'{name}<ul>'
-            for field, value in zip(FIELDS, info):
+            student_fmt = f'<li class=\\"{row.pop("CSS", "")}\\">'
+            student_fmt += f'{row.pop("姓名")}<ul>'
+            for field, value in row.items():
                 if value:
-                    student_fmt += f'<li>{field}{value}</li>'
+                    student_fmt += f'<li>{field}：{value}</li>'
             student_fmt += '</ul></li>'
         print(student_fmt)
         if university in ALL:
